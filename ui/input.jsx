@@ -13,9 +13,7 @@ const InputText = styled.TextInput`
 `
 
 const Input = () =>{
-
     const[value, setValue] = useState()
-
     return(
         <InputView>
             <SafeAreaView>

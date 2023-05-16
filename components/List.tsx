@@ -8,16 +8,23 @@ import PostItem from './PostItem';
 interface ListProps {
     users: IUser[],
     isLoading: boolean,
-    getData: any
+    getData: any,
+    navigation:any
 }
 
-const List:FC<ListProps> = ({users,isLoading,getData}) =>{
+const List:FC<ListProps> = ({users,isLoading,getData,navigation}) =>{
     return (
         <ListUsers>     
             <FlatList 
                 refreshControl={<RefreshControl refreshing={isLoading} onRefresh={getData}/>}
                 data={users} 
-                renderItem={({item}) =><TouchableOpacity><PostItem key={item.id} name={item.name} email={item.email}/></TouchableOpacity>
+                renderItem={({item}) =>(
+                    <TouchableOpacity 
+                        onPress={() => navigation.navigate('PagePost', { id: item.id })}
+                    >
+                        <PostItem key={item.id} name={item.name} email={item.email}/>
+                    </TouchableOpacity>
+                )
             }></FlatList>                 
         </ListUsers>
     )

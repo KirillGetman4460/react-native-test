@@ -5,6 +5,7 @@ import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import List from '../components/List'
 import {IUser} from '../types/Types'
+import {IsLoading} from '../ui/Loading'
 import axios from 'axios';
 
 
@@ -31,39 +32,29 @@ interface DataProps{
   
 }
 
-const IsLoading:FC = () =>{
-  return(
-    <View style={{ 
-      flex:1,
-      justifyContent: "center",
-      alignItems:"center"
-    }}>
-       <ActivityIndicator size="large" color="#282828" />
-       <Text>Loading...</Text>
-    </View>
-  )
-}
 
-const HomeScreen:FC = () =>{
+const HomeScreen:FC = ({navigation}) =>{
 
     const [data, setData] = useState<DataProps[]>([])
 
-    const dispatch = useAppDispatch()
+    // const dispatch = useAppDispatch()
 
-    const { value } = useAppSelector(state => state.counter)
+    // const { value } = useAppSelector(state => state.counter)
     
     const[isLoading, setIsLoading] = useState<boolean>(true)
 
-    const getData = async() => {
+    const getData =() => {
         setIsLoading(true)
 
-        await axios.get<DataProps[]>('https://jsonplaceholder.typicode.com/users')
+        setTimeout(async()=>{
+          await axios.get<DataProps[]>('https://jsonplaceholder.typicode.com/users')
           .then(res => setData(res.data)) 
           .catch(err =>{
             console.log(err);
             Alert.alert("Не удалось загрузить список пользователей",err)
           })
           .finally(() => setIsLoading(false))
+        },300)
     }
 
     useEffect(() =>{
@@ -79,7 +70,7 @@ const HomeScreen:FC = () =>{
     return(
      <View style={styles.container}>
       <View style={styles.wrapper}>
-        <List users={data} isLoading={isLoading} getData={getData}/>
+        <List users={data} isLoading={isLoading} getData={getData} navigation={navigation}/>
       </View>
     </View>    
     )
