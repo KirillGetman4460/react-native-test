@@ -1,9 +1,9 @@
 import React, { useEffect } from 'react'
 import { useState,FC } from 'react';
-import { View, StyleSheet,Text,ActivityIndicator } from 'react-native';
+import { View, StyleSheet,Text,ActivityIndicator, Alert } from 'react-native';
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
-import List from './List'
+import List from '../components/List'
 import {IUser} from '../types/Types'
 import axios from 'axios';
 
@@ -27,7 +27,8 @@ const styles = StyleSheet.create({
   
 
 interface DataProps{
-  users: IUser[]
+  users: IUser[],
+  
 }
 
 const IsLoading:FC = () =>{
@@ -43,7 +44,7 @@ const IsLoading:FC = () =>{
   )
 }
 
-const Wrapper:FC = () =>{
+const HomeScreen:FC = () =>{
 
     const [data, setData] = useState<DataProps[]>([])
 
@@ -54,19 +55,19 @@ const Wrapper:FC = () =>{
     const[isLoading, setIsLoading] = useState<boolean>(true)
 
     const getData = async() => {
-      const { data } = await axios.get<DataProps[]>('https://jsonplaceholder.typicode.com/users')
+        setIsLoading(true)
 
-      return data
+        await axios.get<DataProps[]>('https://jsonplaceholder.typicode.com/users')
+          .then(res => setData(res.data)) 
+          .catch(err =>{
+            console.log(err);
+            Alert.alert("Не удалось загрузить список пользователей",err)
+          })
+          .finally(() => setIsLoading(false))
     }
 
     useEffect(() =>{
       getData()
-        .then(res => {
-          setIsLoading(false)
-          setData(res)
-
-        })
-        .catch(err => console.log(err))  
     },[])
 
     if(isLoading){
@@ -78,10 +79,9 @@ const Wrapper:FC = () =>{
     return(
      <View style={styles.container}>
       <View style={styles.wrapper}>
-        <List users={data}/>
+        <List users={data} isLoading={isLoading} getData={getData}/>
       </View>
     </View>    
     )
 }
-
-export default Wrapper
+export default HomeScreen

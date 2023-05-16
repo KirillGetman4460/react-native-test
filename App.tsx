@@ -5,16 +5,10 @@ import { NavigationContainer } from '@react-navigation/native';
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 import { setupStore } from './store/store'
 import { Provider } from 'react-redux'
-import Wrapper from './components/Wrapper'
+import HomeScreen from './screens/Home'
+import PagePostScreen from './screens/PagePost'
 //import type {StatusBarStyle} from 'react-native';
 
-function HomeScreen() {
-  return (
-    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-      <Text>Home Screen</Text>
-    </View>
-  );
-}
 
  const Stack = createNativeStackNavigator();
 
@@ -25,12 +19,17 @@ export default function App() {
         animated={true}
         backgroundColor="#282828"
       />
-    
-      <NavigationContainer>
-        <Provider store={setupStore()}>
-          <Wrapper/>
-        </Provider>
+     <Provider store={setupStore()}>
+     <NavigationContainer>
+        <Stack.Navigator>
+         
+            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Список пользователей' }} />
+            <Stack.Screen name="PagePost" component={PagePostScreen} options={{ title: 'Страница пользователя' }}/>
+        
+        </Stack.Navigator>
       </NavigationContainer>
+    </Provider>
+     
     </SafeAreaView>
   );  
 } 

@@ -12,7 +12,7 @@ const PostItem:FC<IUser>  = ({name, email}) =>{
                     flex: 1,
                     flexDirection: 'row',     
                     alignItems:'center',
-                           
+                    
                 }}
             >
                 <Image
@@ -34,6 +34,7 @@ const PostItem:FC<IUser>  = ({name, email}) =>{
 
 const PostView = styled.View`
     padding: 0px 20px;
+    
 
 `
 
