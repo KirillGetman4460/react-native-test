@@ -22,8 +22,12 @@ export default function App() {
      <Provider store={setupStore()}>
      <NavigationContainer>
         <Stack.Navigator>
-            <Stack.Screen name="Home" component={HomeScreen} options={{ title: 'Список пользователей' }} />
-            <Stack.Screen name="PagePost" component={PagePostScreen} options={{ title: 'Страница пользователя' }}/>    
+            <Stack.Screen 
+              name="Home" 
+              component={HomeScreen} 
+              options={{ title: 'List all movies' }} 
+            />
+            <Stack.Screen name="PagePost" component={PagePostScreen} options={{ title: 'Page movie' }}/>    
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>

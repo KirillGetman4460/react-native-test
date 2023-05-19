@@ -1,8 +1,9 @@
 import React, { useEffect } from 'react'
 import { useState,FC } from 'react';
-import { View, StyleSheet,Text,ActivityIndicator, Alert } from 'react-native';
+import { View, StyleSheet,Text,ActivityIndicator, Alert,Dimensions } from 'react-native';
 import {useAppDispatch, useAppSelector} from "../hooks/redux";
-import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Carousel from 'react-native-reanimated-carousel';
+
 import List from '../components/List'
 import {IUser} from '../types/Types'
 import {IsLoading} from '../ui/Loading'
@@ -15,11 +16,6 @@ const styles = StyleSheet.create({
   
     },
     image: {
-      flex: 1,
-      justifyContent: 'center',
-      
-    },
-    wrapper:{
       flex: 1,
       justifyContent: 'center',
       
@@ -37,6 +33,8 @@ const HomeScreen:FC = ({navigation}) =>{
 
     const [data, setData] = useState<DataProps[]>([])
 
+    const width = Dimensions.get('window').width;
+
     // const dispatch = useAppDispatch()
 
     // const { value } = useAppSelector(state => state.counter)
@@ -47,8 +45,11 @@ const HomeScreen:FC = ({navigation}) =>{
         setIsLoading(true)
 
         setTimeout(async()=>{
-          await axios.get<DataProps[]>('https://jsonplaceholder.typicode.com/users')
-          .then(res => setData(res.data)) 
+          await axios.get<DataProps[]>("https://api.themoviedb.org/3/movie/popular",{headers:{
+            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NTMxYjVlNDA4NDY2MmMwNzcxMTcxOTM4MzgzMWIwZSIsInN1YiI6IjYyMDI5MmNiZjcwNmRlMDBkNzAyNDJkYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0z6231lzDw4QpqPJHLYH-qwwUaFkn9_FsB5y1lihSVk",
+            accept:'application/json'
+          }})
+          .then(({data}) => setData(data.results)) 
           .catch(err =>{
             console.log(err);
             Alert.alert("Не удалось загрузить список пользователей",err)
@@ -69,9 +70,7 @@ const HomeScreen:FC = ({navigation}) =>{
 
     return(
      <View style={styles.container}>
-      <View style={styles.wrapper}>
-        <List users={data} isLoading={isLoading} getData={getData} navigation={navigation}/>
-      </View>
+        <List movies={data} isLoading={isLoading} getData={getData} navigation={navigation}/>       
     </View>    
     )
 }

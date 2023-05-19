@@ -4,22 +4,19 @@ import { View,Text,Button,FlatList,Image  } from 'react-native';
 import styled from 'styled-components/native';
 import {IUser} from '../types/Types'
 
-const PostItem:FC<IUser>  = ({name, email}) =>{   
+const PostItem:FC<IUser>  = ({name,img}) =>{   
     return(
         <PostView>
             <View
                 style={{
-                    flex: 1,
-                    flexDirection: 'row',     
-                    alignItems:'center',
-                    
+                    flex: 1,                         
                 }}
             >
                 <Image
-                    source={{uri: 'https://yt3.ggpht.com/ytc/AL5GRJVSWSvQyp1rEHjpVh2HB2VgWbM6kCsN2MJbC8P7IQ=s68-c-k-c0x00ffffff-no-rj'}}
+                    source={{uri: `https://image.tmdb.org/t/p/original//${img}`}}
                     style={{
-                        width: 40, 
-                        height: 40,
+                        width: 154, 
+                        height: 215,
                         borderRadius: 12,
                         
                     }}          
@@ -27,15 +24,14 @@ const PostItem:FC<IUser>  = ({name, email}) =>{
                 <PostTitle>{name}</PostTitle>
             </View>
             
-            <PostTitleText>{email}</PostTitleText>
         </PostView>
     )
 }
 
 const PostView = styled.View`
     padding: 0px 20px;
-    
-
+    flex: 0 1;
+    width: 200px;
 `
 
 const PostTitle = styled.Text`

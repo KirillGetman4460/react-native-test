@@ -12,27 +12,32 @@ interface ListProps {
     navigation:any
 }
 
-const List:FC<ListProps> = ({users,isLoading,getData,navigation}) =>{
-    return (
-        <ListUsers>     
-            <FlatList 
+const List:FC<ListProps> = ({movies,isLoading,getData,navigation}) =>{
+    return (   
+            <ListUsers 
+                horizontel={true}
+                numColumns={2}
+               
                 refreshControl={<RefreshControl refreshing={isLoading} onRefresh={getData}/>}
-                data={users} 
+                data={movies} 
+               
                 renderItem={({item}) =>(
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('PagePost', { id: item.id })}
                     >
-                        <PostItem key={item.id} name={item.name} email={item.email}/>
+                        <PostItem key={item.id} name={item.title} img={item.poster_path}/>
                     </TouchableOpacity>
                 )
-            }></FlatList>                 
-        </ListUsers>
+            }></ListUsers>                 
     )
 }
 
-const ListUsers = styled.View`
+const ListUsers = styled.FlatList`
+    
+   
     padding: 30px 0px;
-    padding-top: 0px;
-`
+    padding-top: 20px; 
+`   
+
 
 export default List
