@@ -15,7 +15,7 @@ const PostItem:FC<IUser>  = ({name,img}) =>{
                 <Image
                     source={{uri: `https://image.tmdb.org/t/p/original//${img}`}}
                     style={{
-                        width: 154, 
+                        width: 166, 
                         height: 215,
                         borderRadius: 12,
                         
@@ -29,17 +29,19 @@ const PostItem:FC<IUser>  = ({name,img}) =>{
 }
 
 const PostView = styled.View`
-    padding: 0px 20px;
+    padding: 0px 22px;
     flex: 0 1;
+    
     width: 200px;
 `
 
 const PostTitle = styled.Text`
     font-weight: 500;
-    font-size: 20px;
-    line-height: 50px;
+    font-size: 16px;
+    color:#FFFFFF;
     text-align: left;
-    padding-left: 7px;
+    padding-bottom: 13px;
+    padding-top: 8px;
 `
 const PostTitleText = styled.Text`
     font-style: normal;

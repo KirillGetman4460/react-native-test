@@ -12,6 +12,7 @@ interface DataProps{
 const PagePostScreen:FC = ({route}) =>{
 
     const{id} = route.params
+    console.log(id);
     
     const [movie, setMovie] = useState<DataProps | any>([])
     const[isLoading, setIsLoading] = useState<boolean>(true)
@@ -50,9 +51,8 @@ const PagePostScreen:FC = ({route}) =>{
           <Image
               source={{uri: `https://image.tmdb.org/t/p/original//${movie.backdrop_path}`}}
                 style={{
-                  width: 154, 
-                  height: 215,
-                  borderRadius: 12,
+                  width: '100%',
+                  aspectRatio: 4 / 3,
                         
               }}          
                 />

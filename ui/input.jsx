@@ -3,13 +3,14 @@ import { useState } from 'react';
 import styled from 'styled-components/native';
 
 const InputView = styled.View`
-    margin:0px 28px;  
+    margin:0px 20px;  
+    margin-top: 24px;
 `
 const InputText = styled.TextInput`
-    background: #fff;
+    color: red;
+    background: #211F30;
     padding: 11px 16px;
-    border-top-right-radius: 13px;
-    border-bottom-left-radius: 13px;
+    border-radius: 13px;
 `
 
 const Input = () =>{
@@ -20,7 +21,7 @@ const Input = () =>{
                 <InputText
                     onChangeText={setValue}
                     value={value}
-                    placeholder='Search Location...'
+                    placeholder='Search Movies...'
                 >      
                 </InputText>
             </SafeAreaView>

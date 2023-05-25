@@ -16,11 +16,10 @@ const List:FC<ListProps> = ({movies,isLoading,getData,navigation}) =>{
     return (   
             <ListUsers 
                 horizontel={true}
-                numColumns={2}
-               
+                numColumns={2}       
                 refreshControl={<RefreshControl refreshing={isLoading} onRefresh={getData}/>}
                 data={movies} 
-               
+              
                 renderItem={({item}) =>(
                     <TouchableOpacity 
                         onPress={() => navigation.navigate('PagePost', { id: item.id })}
@@ -33,8 +32,6 @@ const List:FC<ListProps> = ({movies,isLoading,getData,navigation}) =>{
 }
 
 const ListUsers = styled.FlatList`
-    
-   
     padding: 30px 0px;
     padding-top: 20px; 
 `   
