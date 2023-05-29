@@ -1,8 +1,8 @@
-import React, { useEffect } from 'react'
+import React, { useEffect,useRef } from 'react'
 import { useState,FC } from 'react';
 import Svg, { Circle,SvgXml  } from 'react-native-svg';
 // import SearchIcon from '../icons/Play.svg';
-import { View, StyleSheet,Text,ActivityIndicator, Alert,Dimensions,TouchableOpacity } from 'react-native';
+import { View, StyleSheet,Text,ActivityIndicator, Alert,Dimensions,TouchableOpacity,Animated } from 'react-native';
 import styled from 'styled-components/native';
 import Input from "../ui/input"
 // import {useAppDispatch, useAppSelector} from "../hooks/redux";
@@ -31,16 +31,18 @@ interface DataProps{
   users: IUser[],
 }
 
-const ListFilters = styled.FlatList`
-  margin:24px 0px;
-  margin-bottom: 8px;
-  padding-left: 10px;
-`  
+// const ListFilters = styled.FlatList`
+//   margin:24px 0px;
+//   padding-left: 10px;
+// `  
 const FilterTitle = styled.Text`
   color: #fff;
   font-size: 16px;
   padding:0px 10px;
 `
+const Header_Max_Height = 200;
+const Header_Min_Height = 70;
+
 
 const HomeScreen:FC = ({navigation}) =>{
 
@@ -69,8 +71,6 @@ const HomeScreen:FC = ({navigation}) =>{
     </defs>
     </svg>
     ` 
-
-
     // const width = Dimensions.get('window').width;
 
     // const dispatch = useAppDispatch()
@@ -79,21 +79,34 @@ const HomeScreen:FC = ({navigation}) =>{
     
     const[isLoading, setIsLoading] = useState<boolean>(true)
 
-    const getData =() => {
-        setIsLoading(true)
+    const [scrollY] = useState(new Animated.Value(0));
 
-        setTimeout(async()=>{
-          await axios.get<DataProps[]>("https://api.themoviedb.org/3/movie/popular",{headers:{
-            Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NTMxYjVlNDA4NDY2MmMwNzcxMTcxOTM4MzgzMWIwZSIsInN1YiI6IjYyMDI5MmNiZjcwNmRlMDBkNzAyNDJkYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0z6231lzDw4QpqPJHLYH-qwwUaFkn9_FsB5y1lihSVk",
-            accept:'application/json'
-          }})
-          .then(({data}) => setData(data.results)) 
-          .catch(err =>{
-            console.log(err);
-            Alert.alert("Не удалось загрузить список пользователей",err)
-          })
-          .finally(() => setIsLoading(false))
-        },300)
+    const handleScroll = Animated.event(
+      [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+      { useNativeDriver: true }
+    );
+
+    const opacity = scrollY.interpolate({
+      inputRange: [0, 100], 
+      outputRange: [1, 0], 
+      extrapolate: 'clamp',
+    })
+    
+    const getData =() => {
+      setIsLoading(true)
+
+      setTimeout(async()=>{
+        await axios.get<DataProps[]>("https://api.themoviedb.org/3/movie/popular",{headers:{
+          Authorization: "Bearer eyJhbGciOiJIUzI1NiJ9.eyJhdWQiOiI2NTMxYjVlNDA4NDY2MmMwNzcxMTcxOTM4MzgzMWIwZSIsInN1YiI6IjYyMDI5MmNiZjcwNmRlMDBkNzAyNDJkYSIsInNjb3BlcyI6WyJhcGlfcmVhZCJdLCJ2ZXJzaW9uIjoxfQ.0z6231lzDw4QpqPJHLYH-qwwUaFkn9_FsB5y1lihSVk",
+          accept:'application/json'
+        }})
+        .then(({data}) => setData(data.results)) 
+        .catch(err =>{
+          console.log(err);
+          Alert.alert("Не удалось загрузить список пользователей",err)
+        })
+        .finally(() => setIsLoading(false))
+      },300)
     }
 
     useEffect(() =>{
@@ -108,8 +121,16 @@ const HomeScreen:FC = ({navigation}) =>{
 
     return(
      <View style={styles.container}>
-      <Input></Input> 
-        <ListFilters 
+      <Input></Input>   
+      <Animated.FlatList 
+           style={[
+            {
+              marginTop:24,
+              marginBottom:24,
+              paddingLeft:10,  
+              opacity                  
+             }
+           ]}
            data={filters}   
            horizontal={true}  
            renderItem={({item}) =>(
@@ -119,7 +140,13 @@ const HomeScreen:FC = ({navigation}) =>{
            )
        }
         />
-        <List movies={data} isLoading={isLoading} getData={getData} navigation={navigation}/>  
+        <List 
+          movies={data} 
+          isLoading={isLoading} 
+          getData={getData} 
+          navigation={navigation}
+          handleScroll={handleScroll}
+        />  
       
     </View>    
     )

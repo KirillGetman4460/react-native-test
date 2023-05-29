@@ -30,6 +30,7 @@ const PostItem:FC<IUser>  = ({name,img}) =>{
 
 const PostView = styled.View`
     padding: 0px 22px;
+    
     flex: 0 1;
     
     width: 200px;

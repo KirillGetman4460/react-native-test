@@ -22,6 +22,8 @@ const Input = () =>{
                     onChangeText={setValue}
                     value={value}
                     placeholder='Search Movies...'
+                    selectionColor="#BBBBBB"
+                    placeholderTextColor="#BBBBBB"
                 >      
                 </InputText>
             </SafeAreaView>
