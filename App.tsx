@@ -20,7 +20,7 @@ import PagePostScreen from './screens/PagePost'
  const HomeStack = () => (
   <Stack.Navigator>
     <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
-    <Stack.Screen name="PagePost" component={PagePostScreen} options={{ title: 'Page movie' }} />
+    <Stack.Screen name="PagePost" component={PagePostScreen} options={{ title: 'Page movie',headerShown: false }} />
   </Stack.Navigator>
 );
 export default function App() {
@@ -45,6 +45,7 @@ export default function App() {
     </defs>
     </svg>
     ` 
+  let show = '1'
   return (      
     <SafeAreaView style={styles.container}>
       <StatusBar
@@ -56,14 +57,8 @@ export default function App() {
         <Tab.Navigator 
           screenOptions={({ route }) => ({
             tabBarIcon: ({ focused, color, size }) => {
-              // let iconName;
-  
-              // if (route.name === 'Home') {
-              //   iconName = focused
-              //     ? 'ios-information-circle'
-              //     : 'ios-information-circle-outline';
-              // }
-              // You can return any component that you like here!
+              show = route.name == 'PagePost' ? '0' : '1'
+              
               return  <SvgXml xml={xml} width="45px" height="45px" />;
             },
             tabBarShowLabel: false,
@@ -71,14 +66,18 @@ export default function App() {
               position: 'absolute',
               backgroundColor: '#15141F',
               height:70,
-              
+             
              },        
             headerShown: false,
           })}
          
           
         >
-          <Tab.Screen name="Home" component={HomeStack} /> 
+          <Tab.Screen 
+            name="Home" 
+            component={HomeStack} 
+           
+          /> 
         </Tab.Navigator>
       </NavigationContainer>
     </Provider>
